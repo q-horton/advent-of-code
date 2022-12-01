@@ -19,7 +19,7 @@ def run2(inp):
     third = max(processed)
     print(top + second + third)
 
-with open('input.txt') as f:
+with open('./input.txt') as f:
     lines = f.readlines()
 
 run2(lines)
