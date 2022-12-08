@@ -1,4 +1,4 @@
-def parse_line(line):
+def parseLine(line):
     values = line.split()
     them = 0
     you = 0
@@ -19,7 +19,7 @@ def parse_line(line):
     return (them, you)
 
 def evaluate1(line):
-    input = parse_line(line)
+    input = parseLine(line)
     output = input[1]
     if input[1] == 1 and input[0] == 3:
         output += 6
@@ -33,7 +33,7 @@ def evaluate1(line):
     return output
 
 def evaluate2(line):
-    input = parse_line(line)
+    input = parseLine(line)
     you = 0
     them = input[0]
     win_points = 0

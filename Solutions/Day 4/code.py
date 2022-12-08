@@ -1,4 +1,4 @@
-def parse_list(line):
+def parseList(line):
     sections = line.split(",")
     sec1 = sections[0].split("-")
     sec2 = sections[1].split("-")
