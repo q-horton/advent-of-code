@@ -30,17 +30,17 @@ def getBounds(drops):
     maxs = list(drops[0])
     for i in drops:
         x,y,z = i
-        if x < mins[0]:
+        if x <= mins[0]:
             mins[0] = x - 1
-        elif x > maxs[0]:
+        elif x >= maxs[0]:
             maxs[0] = x + 1
-        if y < mins[1]:
+        if y <= mins[1]:
             mins[1] = y - 1
-        elif y > maxs[1]:
+        elif y >= maxs[1]:
             maxs[1] = y + 1
-        if z < mins[2]:
+        if z <= mins[2]:
             mins[2] = z - 1
-        elif z > maxs[2]:
+        elif z >= maxs[2]:
             maxs[2] = z + 1
     return [mins, maxs]
 
@@ -89,21 +89,15 @@ def getExternalAir(drops, bounds):
 def run2(lines):
     drops = parse(lines)
     bounds = getBounds(drops)
-    print("total", (bounds[1][0] - bounds[0][0] + 1) * (bounds[1][1] - bounds[0][1] + 1) * (bounds[1][2] - bounds[0][2] + 1), bounds)
-    print("drops", len(drops))
     external_air = getExternalAir(drops, bounds)
-    print("external", len(external_air))
     internal_air = []
     for x in range(bounds[0][0] + 1, bounds[1][0]):
         for y in range(bounds[0][1] + 1, bounds[1][1]):
             for z in range(bounds[0][2] + 1, bounds[1][2]):
                 if (not (x,y,z) in drops) and (not (x,y,z) in external_air):
                     internal_air.append((x,y,z))
-    print("internal", len(internal_air))
     total_area = run(drops)
-    print("total sides", total_area)
     hidden_area = run(internal_air)
-    print("internal sides", hidden_area)
     return total_area - hidden_area
 
 with open('./input.txt') as f:
