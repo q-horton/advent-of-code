@@ -1,2 +1,6 @@
-# Advent Of Code 2022
-Repo for my solutions to the 2022 Advent of Code problems. Will be completed in Python.
+# Advent Of Code
+Repo for my solutions to the Advent of Code problems.
+
+## Languages
+- 2022: Python
+- 2023: ?
