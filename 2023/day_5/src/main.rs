@@ -27,8 +27,8 @@ fn c1_parse_level(latest: &Vec<u64>, mapping: &Vec<Vec<u64>>) -> Vec<u64> {
 
 fn challenge_one(data: Vec<String>) -> u64 {
     let mut latest: Vec<Vec<u64>> = vec![];
-    let seeds: &str = data[0].split(':').collect::<Vec<&str>>()[1].trim();
-    latest.push(seeds.split(' ').map(|x| x.trim().parse::<u64>().unwrap()).collect::<Vec<u64>>());
+    latest.push(data[0].split(':').collect::<Vec<&str>>()[1].trim().split(' ')
+                .map(|x| x.trim().parse::<u64>().unwrap()).collect::<Vec<u64>>());
 
     let mut is_mapping: bool = false;
     let mut mapping: Vec<Vec<u64>> = vec![];
@@ -63,6 +63,7 @@ fn c2_parse_level(latest: &Vec<[u64; 2]>, mapping: &Vec<Vec<u64>>) -> Vec<[u64; 
         let i: [u64; 2] = yet_to_check[index];
         let mut mapped: bool = false;
         for j in mapping {
+            mapped = true;
             if (i[0] >= j[1]) && (i[0] < j[1] + j[2]) {
                 if i[0] + i[1] <= j[1] + j[2] {
                     frontier.push([j[0] + i[0] - j[1], i[1]]);
@@ -70,25 +71,17 @@ fn c2_parse_level(latest: &Vec<[u64; 2]>, mapping: &Vec<Vec<u64>>) -> Vec<[u64; 
                     frontier.push([j[0] + i[0] - j[1], (j[1] + j[2] - 1 - i[0])]);
                     yet_to_check.push([j[1] + j[2], i[1] - (j[1] + j[2] - 1 - i[0])]);
                 }
-                mapped = true;
-                break;
             } else if (i[0] + i[1] > j[1]) && (i[0] + i[1] <= j[1] + j[2]) {
                 yet_to_check.push([i[0], j[1] - i[0]]);
                 frontier.push([j[0], i[1] - (j[1] - i[0])]);
-                mapped = true;
-                break;
             } else if (i[0] < j[1]) && (i[0] + i[1] > j[1] + j[2]) {
                 frontier.push([j[0], j[2]]);
                 yet_to_check.push([i[0], j[1] - i[0]]);
                 yet_to_check.push([j[1] + j[2], (i[0] + i[1]) - (j[1] + j[2])]);
-                mapped = true;
-                break;
-            }
+            } else { mapped = false; }
+            if mapped { break; }
         }
-        if !mapped {
-            frontier.push(i);
-        }
-
+        if !mapped { frontier.push(i); }
         index += 1;
     }
     frontier
