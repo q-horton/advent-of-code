@@ -2,6 +2,7 @@ pub mod read_input;
 
 use crate::read_input::*;
 use std::collections::hash_map::HashMap;
+use num::integer::*;
 
 fn main() {
     let input_data: Vec<String> = read_input("input.txt");
@@ -36,15 +37,6 @@ fn challenge_one(data: Vec<String>) -> u64 {
     iteration
 }
 
-fn is_finished(current: &Vec<String>) -> bool {
-    for i in current {
-        if i.as_bytes()[2] != 'Z' as u8 {
-            return false;
-        }
-    }
-    true
-}
-
 fn challenge_two(data: Vec<String>) -> u64 {
     let dummy: String = data[0].clone();
     let instructions: &[u8] = dummy.as_bytes();
@@ -62,27 +54,25 @@ fn challenge_two(data: Vec<String>) -> u64 {
             current.push((*i).clone());
         }
     }
-    let mut iteration: u64 = 0;
-    while !is_finished(&current) {
-        let action: char = instructions[(iteration % (instructions.len() as u64)) as usize] as char;
-        let index: usize;
-        if action == 'L' {
-            index = 0;
-        } else if action == 'R' {
-            index = 1;
-        } else {
-            panic!("{} is not an action", action);
-        }
-        let mut next: Vec<String> = vec![];
-        for i in &current {
-            next.push(maps[i][index].clone());
-        }
-        current = next;
-        iteration += 1;
-        if iteration % 1000000 == 0 {
-            println!("{}", iteration);
+    let mut iterations: Vec<u64> = vec![];
+    for i in 0..current.len() {
+        iterations.push(0);
+        while current[i].as_bytes()[2] != 'Z' as u8 {
+            let action: char = instructions[(iterations[i] as usize) % instructions.len()] as char;
+            if action == 'L' {
+                current[i] = maps[&current[i]][0].clone();
+            } else if action == 'R' {
+                current[i] = maps[&current[i]][1].clone();
+            } else {
+                panic!("{} is not an action", action);
+            }
+            iterations[i] += 1;
         }
     }
-
-    iteration
+    
+    let mut tot_iterations: u64 = 1;
+    for i in 0..iterations.len() {
+        tot_iterations = tot_iterations.lcm(&iterations[i]);
+    }
+    tot_iterations
 }
