@@ -8,3 +8,5 @@ The language that I use to address the challenges can vary by year, the followin
 
 - 2022: Python
 - 2023: Rust
+- 2024: Python
+- 2025: Python
