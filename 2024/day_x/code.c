@@ -57,6 +57,7 @@ Input read_input() {
       // Grow input capacity if required
       if (input.length >= input.capacity) {
         input.lines = realloc(input.lines, 2 * input.capacity * sizeof(String));
+        input.capacity = 2 * input.capacity;
       }
 
       // Insert new line to input
@@ -69,6 +70,7 @@ Input read_input() {
       // Check other next chars
       if (line.length >= line.capacity) {
         line.data = realloc(line.data, (2 * line.capacity + 1) * sizeof(char));
+        line.capacity = 2 * line.capacity;
       }
       line.data[line.length] = c;
       line.length++;
@@ -77,13 +79,6 @@ Input read_input() {
     // Read next char
     c = fgetc(file);
   }
-
-  // Ensure that last line is saved to input
-  if (input.length >= input.capacity) {
-    input.lines = realloc(input.lines, (input.capacity + 1) * sizeof(String));
-  }
-  input.lines[input.length] = line;
-  input.length++;
 
   return input;
 }
@@ -98,7 +93,10 @@ void free_input(Input input) {
 int main(int argc, char** argv) {
   Input input = read_input();
   
-  if(argc == 1 || (argc == 2 && !strcmp(argv[1], "1"))) {
+  if (argc == 1) {
+    printf("Part 1 result:\r\n%ld\r\n", part_one(input));
+    printf("Part 2 result:\r\n%ld\r\n", part_two(input));
+  } else if (argc == 2 && !strcmp(argv[1], "1")) {
     printf("Part 1 result:\r\n%ld\r\n", part_one(input));
   } else if (argc == 2 && !strcmp(argv[1], "2")) {
     printf("Part 2 result:\r\n%ld\r\n", part_two(input));
